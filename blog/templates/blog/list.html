@@ -1,9 +1,15 @@
 <html>
-{% for post in posts %}
-    <div>
-        <h1><a href="">{{ post.title }}</a></h1>
+
+{% if latest_posts %}
+    
+    {% for post in latest_posts %}
+        <h2><a href="{% url 'detail' post.id %}">{{ post.title }}</a></h2>
         <p>{{ post.text|safe }}</p>
-    </div>
-{% endfor %}
+    {% endfor %}
+    
+{% else %}
+    <p>No posts. Sorry</p>
+
+{% endif %}
 
 </html>
