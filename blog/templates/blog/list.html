@@ -1,15 +1,14 @@
-<html>
+{% extends 'blog/base.html' %}
 
-{% if latest_posts %}
-    
-    {% for post in latest_posts %}
-        <h2><a href="{% url 'detail' post.id %}">{{ post.title }}</a></h2>
-        <p>{{ post.text|safe }}</p>
-    {% endfor %}
-    
-{% else %}
-    <p>No posts. Sorry</p>
+{% block content %}
+    {% if latest_posts %}
+        {% for post in latest_posts %}
+            <h2><a href="{% url 'blog:detail' post.id %}">{{ post.title }}</a></h2>
+            <p>{{ post.text|safe|truncatewords_html:30 }}</p>
+        {% endfor %}
+    {% else %}
+        <p>No posts. Sorry</p>
+        <p><a href="{% url 'blog:list' %}">на главную</a>
+    {% endif %}
+{% endblock %}
 
-{% endif %}
-
-</html>

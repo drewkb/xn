@@ -18,9 +18,3 @@ class DetailView(generic.DetailView):
     template_name = 'blog/detail.html'
 
 
-
-'''
-def lst(request):
-    posts = Post.objects.all()
-    return render(request, 'blog/list.html', {'posts':posts})
-'''
