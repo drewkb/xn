@@ -1,7 +1,7 @@
 {% extends 'blog/base.html' %}
 
 {% block category_links %}
-    {% for link in categories %}
+    {% for link in category %}
         <a class="dropdown-item" href="{% url 'blog:category' link.id %}">{{ link.title }}</a>
     {% endfor %}
 {% endblock %}

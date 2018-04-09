@@ -7,7 +7,7 @@ class BaseMixin(generic.base.TemplateResponseMixin):
 
     def get_context_data(self, *args, **kwargs):
         context = super(BaseMixin, self).get_context_data(**kwargs)
-        context['categories'] = Category.objects.all()
+        context['category'] = Category.objects.all()
         return context
 
 
