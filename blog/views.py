@@ -15,6 +15,7 @@ class IndexView(BaseMixin, generic.ListView):
 
     template_name = 'blog/list.html'
     context_object_name = 'latest_posts'
+    paginate_by = 3
     
     def get_queryset(self):
         return Post.objects.order_by('-date')[:10]
@@ -30,6 +31,7 @@ class PostsByCategoryView(BaseMixin, generic.ListView):
 
     template_name = 'blog/category.html'
     context_object_name = 'category_posts'
+    paginate_by = 1
     
     def get_queryset(self):
         self.categories = get_object_or_404(Category, pk=self.kwargs.get('pk'))
