@@ -1,9 +1,9 @@
-{% extends 'blog/base.html' %}
+{% extends 'blog/category_links.html' %}
 
 {% block content %}
     <h2>{{post.title}}</h2>
     <p>{{post.text|safe}}</p>
-    <p><a href="{% url 'blog:list' %}">на главную</a>
+    <hr>
 {% endblock %}
 
 

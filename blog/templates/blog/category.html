@@ -1,8 +1,8 @@
-{% extends 'blog/category_links.html' %}
+{% extends 'blog/base.html' %}
 
 {% block content %}
-    {% if latest_posts %}
-        {% for post in latest_posts %}
+    {% if category_posts %}
+        {% for post in category_posts %}
             <h2><a href="{% url 'blog:detail' post.id %}">{{ post.title }}</a></h2>
             <p>{{ post.text|safe|truncatewords_html:30 }}</p>
             <hr>
@@ -12,6 +12,4 @@
         <a href="{% url 'blog:list' %}">на главную</a>
     {% endif %}
 {% endblock %}
-
-
 
