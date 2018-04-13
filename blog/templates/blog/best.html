@@ -1,0 +1,15 @@
+{% extends 'blog/category_links.html' %}
+
+{% block content %}
+    {% if best_posts %}
+        {% for post in best_posts %}
+            <h2><a href="{% url 'blog:detail' post.id %}">{{ post.title }}</a></h2>
+            <p>{{ post.text|safe|truncatewords_html:30 }}</p>
+            <hr>
+        {% endfor %}
+    {% else %}
+        <p>No posts. Sorry</p>
+        <a href="{% url 'blog:list' %}">на главную</a>
+    {% endif %}
+{% endblock %}
+

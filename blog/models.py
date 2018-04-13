@@ -27,6 +27,7 @@ class Post(models.Model):
     begin = models.DateField(default=timezone.now, verbose_name='Когда начнется?')
     end = models.DateField(default=get_default_date, verbose_name='Когда закончится?')
     date = models.DateTimeField(auto_now=True)
+    best = models.BooleanField(default=False, verbose_name='Лучшее')
 
     def __str__(self):
         return self.title
