@@ -1,6 +1,6 @@
 from django.views import generic
 from django.shortcuts import get_object_or_404
-from .models import Post, Category
+from .models import Post, Category, Page
 
 
 class BaseMixin(generic.base.TemplateResponseMixin):
@@ -46,6 +46,19 @@ class BestView(BaseMixin, generic.ListView):
     
     def get_queryset(self):
         return Post.objects.filter(best=True).order_by('-date')[:40]
+
+
+class PageView(BaseMixin, generic.DetailView):
+
+    template_name = 'blog/page.html'
+    slug = None
+
+    def get_object(self):
+        return get_object_or_404(Page, slug=self.slug)
+
+
+
+
 
 
 

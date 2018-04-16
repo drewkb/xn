@@ -36,4 +36,20 @@ class Post(models.Model):
         return reverse('blog:detail', args=[self.id])
 
 
+class Page(models.Model):
+    
+    slug = models.SlugField()
+    title = models.CharField(max_length=150, verbose_name='Заголовок')
+    text = models.TextField(verbose_name='Текст')
+
+    def __str__(self):
+        return self.title
+
+
+
+
+
+
+
+
 
