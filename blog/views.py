@@ -1,6 +1,9 @@
 from django.views import generic
 from django.shortcuts import get_object_or_404
 from .models import Post, Category, Page
+from .forms import DateForm
+from django.utils import timezone
+from django.http import HttpResponseRedirect
 
 
 class BaseMixin(generic.base.TemplateResponseMixin):
@@ -57,11 +60,28 @@ class PageView(BaseMixin, generic.DetailView):
         return get_object_or_404(Page, slug=self.slug)
 
 
+class DateView(BaseMixin, generic.ListView):
 
+    date = timezone.now()
+    template_name = 'blog/calendar.html'   
+    context_object_name = 'post_by_date'  
 
+    def post(self, request, *args, **kwargs):
+        form = DateForm(self.request.POST)
+        if form.is_valid():
+            return self.get(request, *args, **kwargs)
 
+    def get_context_data(self, *args, **kwargs):
+        context = super(DateView, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = DateForm()
+        return context
 
-
+    def get_queryset(self):
+        form = DateForm(self.request.POST)
+        if form.is_valid():
+            date = form.cleaned_data['asked_date']
+            return Post.objects.filter(end__lte=date)
     
 
 
