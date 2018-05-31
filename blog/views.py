@@ -6,6 +6,9 @@ from django.utils import timezone
 from django.http import HttpResponseRedirect
 
 
+# Количество записей на странице (пагинация)
+NUM = 9
+
 class BaseMixin(generic.base.TemplateResponseMixin):
 
     def get_context_data(self, *args, **kwargs):
@@ -18,7 +21,7 @@ class IndexView(BaseMixin, generic.ListView):
 
     template_name = 'blog/list.html'
     context_object_name = 'latest_posts'
-    paginate_by = 11
+    paginate_by = NUM
     
     def get_queryset(self):
         return Post.objects.order_by('-date')[:40]
@@ -34,7 +37,7 @@ class PostsByCategoryView(BaseMixin, generic.ListView):
 
     template_name = 'blog/category.html'
     context_object_name = 'category_posts'
-    paginate_by = 4
+    paginate_by = NUM
     
     def get_queryset(self):
         self.categories = get_object_or_404(Category, pk=self.kwargs.get('pk'))
@@ -45,7 +48,7 @@ class BestView(BaseMixin, generic.ListView):
 
     template_name = 'blog/best.html'
     context_object_name = 'best_posts'
-    paginate_by = 11
+    paginate_by = NUM
     
     def get_queryset(self):
         return Post.objects.filter(best=True).order_by('-date')[:40]
@@ -62,10 +65,10 @@ class PageView(BaseMixin, generic.DetailView):
 
 class DateView(BaseMixin, generic.ListView):
 
-    paginate_by = 11
+    paginate_by = NUM
     template_name = 'blog/calendar.html'   
     context_object_name = 'post_by_date'
-    date = timezone.now() 
+    date = timezone.now().date() 
     form = DateForm(initial={'asked_date':timezone.now}) 
     cat = ''
 

@@ -23,10 +23,10 @@
                 <div class="collapse navbar-collapse" id="navDefault">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item active">
-                            <a class="nav-link" href="{% url 'blog:calendar' %}">Календарь <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="{% url 'blog:best' %}">Лучшее<span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'blog:best' %}">Лучшее</a>
+                            <a class="nav-link" href="{% url 'blog:calendar' %}">Поиск</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'blog:about' %}">О нас</a>
@@ -75,13 +75,20 @@
                 </nav>
                 {% endif %}
                 </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-3">
+                {% block ad %}
+                    <h4> Тут может быть Ваша реклама </h4>
+                    {% lorem random %}
+                {% endblock %}
+                </div>
             </div>
         </div>
 
         <footer class="footer">
           <div class="container">
             <span class="text-muted">
-                <a href="{% url 'blog:list' %}">&copy; Хитрый нищеброд</a>
+                <a href="{% url 'blog:list' %}">&copy; Хитрый нищеброд, {% now "Y" %}</a>
             </span>
           </div>
         </footer>

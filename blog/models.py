@@ -9,7 +9,6 @@ from datetime import timedelta
 class Category(models.Model):
 
     title = models.CharField(max_length=150, verbose_name='Категория')
-    logo = models.ImageField(upload_to='logo/', blank=True)
 
     def __str__(self):
         return self.title
@@ -21,12 +20,12 @@ class Post(models.Model):
         return timezone.now()+timedelta(days=7)
 
     author = models.ForeignKey('auth.User', on_delete=models.CASCADE)
-    title = models.CharField(max_length=150, verbose_name='Что? (до 150 сиволов)')
+    title = models.CharField(max_length=150, verbose_name='Заголовок (до 150 знаков)')
     categories = models.ManyToManyField(Category)
     text = models.TextField(verbose_name='Описание')
     begin = models.DateField(default=timezone.now, verbose_name='Когда начнется?')
     end = models.DateField(default=get_default_date, verbose_name='Когда закончится?')
-    date = models.DateTimeField(auto_now=True)
+    date = models.DateTimeField(auto_now=True, verbose_name='Дата обновления')
     best = models.BooleanField(default=False, verbose_name='Лучшее')
 
     def __str__(self):
