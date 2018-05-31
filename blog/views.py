@@ -38,7 +38,7 @@ class PostsByCategoryView(BaseMixin, generic.ListView):
     
     def get_queryset(self):
         self.categories = get_object_or_404(Category, pk=self.kwargs.get('pk'))
-        return Post.objects.filter(categories=self.categories)
+        return Post.objects.order_by('-date').filter(categories=self.categories)
 
 
 class BestView(BaseMixin, generic.ListView):
@@ -62,11 +62,12 @@ class PageView(BaseMixin, generic.DetailView):
 
 class DateView(BaseMixin, generic.ListView):
 
+    paginate_by = 11
     template_name = 'blog/calendar.html'   
     context_object_name = 'post_by_date'
     date = timezone.now() 
     form = DateForm(initial={'asked_date':timezone.now}) 
-    paginate_by = 11
+    cat = ''
 
     def post(self, request, *args, **kwargs):
         return self.get(request, *args, **kwargs)
@@ -75,18 +76,22 @@ class DateView(BaseMixin, generic.ListView):
         context = super(DateView, self).get_context_data(**kwargs)
         if 'form' not in context:           
             context['form'] = self.form
-        if self.form.is_valid():
-            self.date = self.form.cleaned_data['asked_date']
         context['date'] = self.date
+        if self.cat:        
+            context['cat'] = self.cat
         return context
 
     def get_queryset(self):
         form = DateForm(self.request.POST)
         if form.is_valid():
             self.date = form.cleaned_data['asked_date']
-            return Post.objects.filter(end__lte=self.date)
+            self.cat = form.cleaned_data['asked_cat']
+            if self.cat:
+                return Post.objects.order_by('-date').filter(end__gte=self.date).filter(categories=self.cat).filter(begin__lte=timezone.now())
+            else:
+                return Post.objects.order_by('-date').filter(end__gte=self.date).filter(begin__lte=timezone.now())
         else:
-            return Post.objects.filter(end__lte=timezone.now())
+            return Post.objects.order_by('-date').filter(begin__lte=timezone.now())
    
 
 
