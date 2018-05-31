@@ -2,12 +2,13 @@
 
 {% block content %}
 
-    <form method="post">{% csrf_token %}
+    <form action="" method="post">{% csrf_token %}
         {{ form.as_p }} 
         <input type="submit" value="Найти!">
     </form>
-<br>
-
+<hr>
+{{date}}
+<hr>
 
     {% if post_by_date %}
         {% for post in post_by_date  %}

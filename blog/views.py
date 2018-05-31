@@ -62,26 +62,31 @@ class PageView(BaseMixin, generic.DetailView):
 
 class DateView(BaseMixin, generic.ListView):
 
-    date = timezone.now()
     template_name = 'blog/calendar.html'   
-    context_object_name = 'post_by_date'  
+    context_object_name = 'post_by_date'
+    date = timezone.now() 
+    form = DateForm(initial={'asked_date':timezone.now}) 
+    paginate_by = 11
 
     def post(self, request, *args, **kwargs):
-        form = DateForm(self.request.POST)
-        if form.is_valid():
-            return self.get(request, *args, **kwargs)
+        return self.get(request, *args, **kwargs)
 
     def get_context_data(self, *args, **kwargs):
         context = super(DateView, self).get_context_data(**kwargs)
-        if 'form' not in context:
-            context['form'] = DateForm()
+        if 'form' not in context:           
+            context['form'] = self.form
+        if self.form.is_valid():
+            self.date = self.form.cleaned_data['asked_date']
+        context['date'] = self.date
         return context
 
     def get_queryset(self):
         form = DateForm(self.request.POST)
         if form.is_valid():
-            date = form.cleaned_data['asked_date']
-            return Post.objects.filter(end__lte=date)
-    
+            self.date = form.cleaned_data['asked_date']
+            return Post.objects.filter(end__lte=self.date)
+        else:
+            return Post.objects.filter(end__lte=timezone.now())
+   
 
 

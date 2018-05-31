@@ -3,5 +3,5 @@ from django.forms import SelectDateWidget
 
 
 class DateForm(forms.Form):
-    asked_date = forms.DateField(widget=SelectDateWidget)
+    asked_date = forms.DateField(label='Выберите дату ', widget=SelectDateWidget)
 
